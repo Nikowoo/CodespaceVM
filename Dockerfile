@@ -1,17 +1,13 @@
-FROM gitpod/workspace-full-vnc
+FROM debian:bookworm-slim
 
-# Dependencies for Chrome and Firefox
-RUN sudo apt-get update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
-   libgtk2.0-0 \
-   libgtk-3-0 \
-   libnotify-dev \
-   libgconf-2-4 \
-   libnss3 \
-   libxss1 \
-   libasound2 \
-   libxtst6 \
-   xauth \
-   xvfb \
-   firefox \
- && sudo rm -rf /var/lib/apt/lists/*
+# Install XFCE and other necessary packages
+RUN apt-get update && apt-get install -y \
+    xfce4 \
+    xfce4-goodies \
+    xorg \
+    xauth \
+    openbox \
+    wget \
+    gnupg2 \
+    software-properties-common \
+    && rm -rf /var/lib/apt/lists/*
