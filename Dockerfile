@@ -1,8 +1,10 @@
-FROM dorowu/ubuntu-desktop-lxde-vnc:bionic
+FROM ubuntu:22.04
 
-# Install dependencies for Steam
-RUN sudo apt-get update \
- && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# Install dependencies for noVNC and Steam
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+   xauth \
+   xvfb \
    libgtk2.0-0 \
    libgtk-3-0 \
    libnotify-dev \
@@ -11,16 +13,24 @@ RUN sudo apt-get update \
    libxss1 \
    libasound2 \
    libxtst6 \
-   xauth \
-   xvfb \
    wget \
- && sudo rm -rf /var/lib/apt/lists/*
+   sudo \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install noVNC dependencies (e.g., LXDE desktop environment)
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+   lxde \
+   novnc \
+   websockify \
+   tightvncserver \
+ && apt-get clean
 
 # Install Steam
 RUN wget https://steamcdn-a.akamaihd.net/client/installer/steam.deb \
- && sudo dpkg -i steam.deb || sudo apt-get -f install -y \
- && sudo rm steam.deb
+ && dpkg -i steam.deb || apt-get -f install -y \
+ && rm steam.deb
 
-# Expose ports for noVNC
-EXPOSE 5901
+# Expose noVNC port
 EXPOSE 6080
