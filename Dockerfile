@@ -22,5 +22,5 @@ RUN wget https://steamcdn-a.akamaihd.net/client/installer/steam.deb \
  && sudo rm steam.deb
 
 # Expose ports for noVNC
-EXPOSE 5900
+EXPOSE 5901
 EXPOSE 6080
